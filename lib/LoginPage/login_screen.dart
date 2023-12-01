@@ -12,6 +12,15 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> with TickerProviderStateMixin {
   late Animation<double> _animation;
   late AnimationController _animationController;
+  final TextEditingController _emailTextController =
+      TextEditingController(text: '');
+  final TextEditingController _passTextController =
+      TextEditingController(text: '');
+  final FocusNode _passFocusNode = FocusNode();
+  bool _obSecureText = true;
+
+  final _loginFormKey = GlobalKey<FormState>();
+
   @override
   void dispose() {
     _animationController.dispose();
@@ -25,9 +34,7 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
     _animation =
         CurvedAnimation(parent: _animationController, curve: Curves.linear);
     _animation.addListener(() {
-      setState(() {
-
-      });
+      setState(() {});
     });
     if (_animationController.status == AnimationStatus.completed) {
       _animationController.reset();
@@ -57,21 +64,90 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           Container(
             color: Colors.black54,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16,vertical: 80),
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 80),
               child: ListView(
                 children: [
-                  Padding(padding: EdgeInsets.only(left: 80,right:80),
+                  Padding(
+                    padding: EdgeInsets.only(left: 80, right: 80),
                     child: Image.asset('assets/images/login.png'),
                   ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Form(
+                      key: _loginFormKey,
+                      child: Column(children: [
+                        TextFormField(
+                          textInputAction: TextInputAction.next,
+                          onEditingComplete: () =>
+                              FocusScope.of(context).requestFocus(),
+                          keyboardType: TextInputType.emailAddress,
+                          controller: _emailTextController,
+                          validator: (value) {
+                            if (value!.isEmpty || !value.contains('@')) {
+                              return 'please enter a valid Email address';
+                            } else {
+                              return null;
+                            }
+                          },
+                          style: TextStyle(color: Colors.white),
+                          decoration: const InputDecoration(
+                            hintText: 'Email',
+                            hintStyle: TextStyle(color: Colors.white),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white)),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            errorBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        TextFormField(
+                          textInputAction: TextInputAction.next,
+                          focusNode: _passFocusNode,
+                          keyboardType: TextInputType.visiblePassword,
+                          controller: _passTextController,
+                          obscureText: !_obSecureText, // change it diynamically
+                          validator: (value) {
+                            if (value!.isEmpty || value.length < 7) {
+                              return 'please enter a valid Password ';
+                            } else {
+                              return null;
+                            }
+                          },
+                          style: TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            suffixIcon: GestureDetector(
+                              onTap: () {
+                                _obSecureText = !_obSecureText;
 
 
+                              },
+                              child: Icon(
+                                _obSecureText?Icons.visibility
+                                    :Icons.visibility_off
+                              ),
+                            ),
+                            hintText: 'Password',
+                            hintStyle: TextStyle(color: Colors.white),
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.white)),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            errorBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                            ),
+                          ),
+                        )
+                      ]))
                 ],
               ),
             ),
-
-
           )
-
         ],
       ),
     );
