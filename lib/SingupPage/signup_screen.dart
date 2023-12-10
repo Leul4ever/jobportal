@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:job_portal/Services/global_variables.dart';
 import 'dart:io';
@@ -16,7 +17,7 @@ class _SingUpState extends State<SignUp> with TickerProviderStateMixin{
   final TextEditingController _emailTextController =
 
   TextEditingController(text: '');
-  bool _obSecureText = true;
+
   final TextEditingController _passTextController =
   TextEditingController(text: '');
   final TextEditingController _phoneNumberController =
@@ -33,6 +34,8 @@ class _SingUpState extends State<SignUp> with TickerProviderStateMixin{
   final FocusNode _positionCpFousNode=FocusNode();
   final _signUpFormKey =GlobalKey<FormState>();
   File? imageFile;
+  bool _obSecureText = true;
+  bool _isLoading=false;
 
   @override
   void dispose() {
@@ -89,8 +92,8 @@ class _SingUpState extends State<SignUp> with TickerProviderStateMixin{
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child:Container(
-                                width: size.width * 0.40,
-                                height: size.height * 0.2,
+                                width: size.width * 0.35,
+                                height: size.height * 0.17,
                                 decoration: BoxDecoration(
                                   border: Border.all(width: 1,color:Colors.cyanAccent ),
                                   borderRadius: (BorderRadius.circular(40)),
@@ -254,11 +257,82 @@ class _SingUpState extends State<SignUp> with TickerProviderStateMixin{
                                 borderSide: BorderSide(color: Colors.white),
                               ),
                               errorBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue),
+                                borderSide: BorderSide(color: Colors.red),
                               ),
                             ),
 
                           ),
+                          SizedBox(height:25),
+                         _isLoading
+                             ?
+                         Center(
+                           child:Container(
+                             height: 70,
+                             width: 70,
+                             child: const CircularProgressIndicator(),
+
+                           ),
+                         )
+                             :
+                             MaterialButton(onPressed: (){}
+                               //create submitFormOnSignup
+                               ,
+                               color: Colors.cyan,
+                               elevation: 8,
+                               shape: RoundedRectangleBorder(
+                                 borderRadius: BorderRadius.circular(13),
+                               ),
+                               child: Padding(
+                                 padding: EdgeInsets.symmetric(vertical: 14),
+                                 child: Row(
+                                   mainAxisAlignment:MainAxisAlignment.center,
+                                   children: [
+                                     Text('Signup',style: TextStyle(
+                                       color: Colors.white,
+                                       fontWeight: FontWeight.bold,
+                                       fontSize: 20,
+                                     ),)
+                                   ],
+                                 ),
+                               ),
+
+                             ),
+                          SizedBox(height: 40,),
+                          Center(
+                            child: RichText(
+                              text: TextSpan(
+                                children: [
+                                  const TextSpan(
+                                      text: 'Already have an account',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight:FontWeight.bold,
+                                      )
+
+                                  ),
+                                  const TextSpan(
+                                    text: '     '
+                                  ),
+                                  TextSpan(
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () => Navigator.canPop(context) ? Navigator.pop(context) : null,
+                                    text: 'Login ',
+                                      style: TextStyle(
+                                        color: Colors.cyan,
+                                        fontSize: 16,
+                                        fontWeight:FontWeight.bold,
+                                      )
+                                  )
+
+                                ],
+
+                              ),
+
+                            ),
+                          )
+
+
 
 
 
