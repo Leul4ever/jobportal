@@ -254,7 +254,7 @@ class _SingUpState extends State<SignUp> with TickerProviderStateMixin{
                                 borderSide: BorderSide(color: Colors.white),
                               ),
                               errorBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.red),
+                                borderSide: BorderSide(color: Colors.blue),
                               ),
                             ),
 
