@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:job_portal/ForgetPassword/forget_password_screen.dart';
 import 'package:job_portal/Services/global_method.dart';
+
 import '../Services/global_variables.dart';
 import '../SingupPage/signup_screen.dart';
 
@@ -51,6 +52,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
     }
     _animationController.repeat();
     super.initState();
+    print(_animationController.status);
+    print(_animation.value);
   }
 
   void _submitFormOnLogin() async {
@@ -242,7 +245,8 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                                     ..onTap = () {
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(builder: (context) => SignUp()),
+                                        MaterialPageRoute(
+                                            builder: (context) => SignUp()),
                                       );
                                     },
                                   text: 'SignUp',
