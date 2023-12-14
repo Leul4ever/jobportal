@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
@@ -45,6 +46,13 @@ class _SingUpState extends State<SignUp> with TickerProviderStateMixin {
   @override
   void dispose() {
     _animationController.dispose();
+    _fullNameController.dispose();
+    _emailTextController.dispose();
+    _passTextController.dispose();
+    _phoneNumberController.dispose();
+    _emailFocusNode.dispose();
+    _positionCpFousNode.dispose();
+    _phoneNumberController.dispose();
     super.dispose();
   }
 
@@ -152,29 +160,57 @@ class _SingUpState extends State<SignUp> with TickerProviderStateMixin {
 
   void _submitFormOnSignUp() async {
     final isValid = _signUpFormKey.currentState!.validate();
-    if (isValid) {
-      if (imageFile == null) {
-        GlobalMethod.showErrorDialog(
-            error: 'Please pic an image', context: context);
-      }
-      return;
+    if (!isValid) {
+      return; // Stop execution if the form is not valid
     }
+    if (imageFile == null) {
+      GlobalMethod.showErrorDialog(
+          error: 'Please pick an image', context: context);
+      return; // Stop execution if no image is selected
+    }
+
     setState(() {
       _isLoading = true;
     });
+
     try {
+      // Create user with email and password
       await _auth.createUserWithEmailAndPassword(
           email: _emailTextController.text.trim().toLowerCase(),
           password: _passTextController.text.trim());
+
       final User? user = _auth.currentUser;
       final _uid = user!.uid;
+
+      // Upload user image to Firebase Storage
       final ref =
           FirebaseStorage.instance.ref().child('userImage').child(_uid + 'jpg');
       await ref.putFile(imageFile!);
       imageUrl = await ref.getDownloadURL();
-    } catch (e) {
-      print(e);
+
+      // Save user details to Firestore
+      await FirebaseFirestore.instance.collection('user').doc(_uid).set({
+        'id': _uid,
+        'name': _fullNameController.text,
+        'email': _emailTextController.text,
+        'userImage': imageUrl,
+        'phoneNumber': _phoneNumberController.text,
+        'location': _locationController.text,
+        'createdAt': Timestamp.now(),
+      });
+
+      // Navigate back to the previous screen
+      Navigator.pop(context);
+    } catch (error) {
+      setState(() {
+        _isLoading = false;
+      });
+      GlobalMethod.showErrorDialog(error: error.toString(), context: context);
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -348,7 +384,7 @@ class _SingUpState extends State<SignUp> with TickerProviderStateMixin {
                             },
                             style: TextStyle(color: Colors.white),
                             decoration: const InputDecoration(
-                              hintText: 'Phone  ',
+                              hintText: 'PhoneNumber',
                               hintStyle: TextStyle(color: Colors.white),
                               enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(color: Colors.white)),
@@ -367,7 +403,7 @@ class _SingUpState extends State<SignUp> with TickerProviderStateMixin {
                             textInputAction: TextInputAction.next,
                             onEditingComplete: () => FocusScope.of(context)
                                 .requestFocus(_positionCpFousNode),
-                            keyboardType: TextInputType.phone,
+                            keyboardType: TextInputType.streetAddress,
                             controller: _locationController,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -390,7 +426,7 @@ class _SingUpState extends State<SignUp> with TickerProviderStateMixin {
                               ),
                             ),
                           ),
-                          SizedBox(height: 25),
+                          SizedBox(height: 30),
                           _isLoading
                               ? Center(
                                   child: Container(
@@ -400,8 +436,11 @@ class _SingUpState extends State<SignUp> with TickerProviderStateMixin {
                                   ),
                                 )
                               : MaterialButton(
-                                  onPressed: () {}
+                                  onPressed: () {
+                                    _submitFormOnSignUp();
+                                  }
                                   //create submitFormOnSignup
+
                                   ,
                                   color: Colors.cyan,
                                   elevation: 8,
