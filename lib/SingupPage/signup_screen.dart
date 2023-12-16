@@ -52,7 +52,7 @@ class _SingUpState extends State<SignUp> with TickerProviderStateMixin {
     _phoneNumberController.dispose();
     _emailFocusNode.dispose();
     _positionCpFousNode.dispose();
-    _phoneNumberController.dispose();
+
     super.dispose();
   }
 
@@ -184,9 +184,14 @@ class _SingUpState extends State<SignUp> with TickerProviderStateMixin {
 
       // Upload user image to Firebase Storage
       final ref =
-          FirebaseStorage.instance.ref().child('userImage').child(_uid + 'jpg');
+          FirebaseStorage.instance.ref().child('userImage').child('$_uid.jpg');
       await ref.putFile(imageFile!);
       imageUrl = await ref.getDownloadURL();
+
+      // final ref =
+      //     FirebaseStorage.instance.ref().child('userImage').child(_uid + 'jpg');
+      // await ref.putFile(imageFile!);
+      // imageUrl = await ref.getDownloadURL();
 
       // Save user details to Firestore
       await FirebaseFirestore.instance.collection('user').doc(_uid).set({
