@@ -68,6 +68,10 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
           password: _passTextController.text.trim().toLowerCase(),
         );
         Navigator.canPop(context) ? Navigator.pop(context) : null;
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => JobScreen()),
+        // );
       } catch (e) {
         _isLoading = false;
         GlobalMethod.showErrorDialog(error: e.toString(), context: context);

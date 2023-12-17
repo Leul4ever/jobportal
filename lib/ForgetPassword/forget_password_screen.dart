@@ -18,6 +18,12 @@ class _ForgetPasswordState extends State<ForgetPassword>
       TextEditingController(text: '');
   final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     _animationController =
         AnimationController(vsync: this, duration: const Duration(seconds: 20));

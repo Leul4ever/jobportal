@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:job_portal/LoginPage/login_screen.dart';
-
+import 'package:job_portal/user_state.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -9,7 +8,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
   @override
@@ -22,7 +20,7 @@ class MyApp extends StatelessWidget {
               home: Scaffold(
                 body: Center(
                   child: Text(
-                    'Job Finder app is being initialized',
+                    'Job Finder app is being initialized ',
                     style: TextStyle(
                         color: Colors.cyan,
                         fontSize: 40,
@@ -34,7 +32,6 @@ class MyApp extends StatelessWidget {
           } else if (snapshot.hasError) {
             return const MaterialApp(
               home: Scaffold(
-
                 body: Center(
                   child: Text(
                     'An error has been occurred ',
@@ -49,13 +46,12 @@ class MyApp extends StatelessWidget {
           }
 
           return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Job finder App',
-            theme: ThemeData(
-                scaffoldBackgroundColor: Colors.black,
-                primaryColor: Colors.blue),
-            home: Login(),
-          );
+              debugShowCheckedModeBanner: false,
+              title: 'Job finder App',
+              theme: ThemeData(
+                  scaffoldBackgroundColor: Colors.black,
+                  primaryColor: Colors.blue),
+              home: UserState());
         });
   }
 }
