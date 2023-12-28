@@ -8,6 +8,12 @@ class UploadJobNow extends StatefulWidget {
 }
 
 class _UploadJobNowState extends State<UploadJobNow> {
+  TextEditingController _jobCategoryContoller =
+      TextEditingController(text: 'Select Job Category');
+  TextEditingController _jobTitleContoller = TextEditingController();
+  TextEditingController _jobDescriptionContoller = TextEditingController();
+  TextEditingController _deadlineDateContolle = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
   Widget _textTitle({required String label}) {
     return Padding(
@@ -37,19 +43,33 @@ class _UploadJobNowState extends State<UploadJobNow> {
           fet();
         },
         child: TextFormField(
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Value is Missing';
-              }
-              return null;
-            },
-            controller: controller,
-            enabled: enabled,
-            key: ValueKey(valueKey),
-            style: TextStyle(
-              color: Colors.white,
-            ),
-            maxLines: valueKey == 'JobDescription' ? 3 : 1),
+          validator: (value) {
+            if (value!.isEmpty) {
+              return 'Value is Missing';
+            }
+            return null;
+          },
+          controller: controller,
+          enabled: enabled,
+          key: ValueKey(valueKey),
+          style: TextStyle(
+            color: Colors.white,
+          ),
+          maxLines: valueKey == 'JobDescription' ? 3 : 1,
+          maxLength: maxLength,
+          keyboardType: TextInputType.text,
+          decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.black54,
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black)),
+              errorBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.red),
+              )),
+        ),
       ),
     );
   }
@@ -99,7 +119,7 @@ class _UploadJobNowState extends State<UploadJobNow> {
                       child: Padding(
                         padding: EdgeInsets.all(8),
                         child: Text(
-                          'Please fill all field',
+                          'Please fill all fields',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 40,
@@ -120,7 +140,36 @@ class _UploadJobNowState extends State<UploadJobNow> {
                         key: _formKey,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [_textTitle(label: 'Job Category')],
+                          children: [
+                            _textTitle(label: 'Job Category:'),
+                            _textFormFields(
+                                valueKey: 'JobCategory',
+                                controller: _jobCategoryContoller,
+                                enabled: false,
+                                fet: () {},
+                                maxLength: 100),
+                            _textTitle(label: 'Job Title:'),
+                            _textFormFields(
+                                valueKey: 'JobTitle',
+                                controller: _jobTitleContoller,
+                                enabled: true,
+                                fet: () {},
+                                maxLength: 100),
+                            _textTitle(label: 'Job Description:'),
+                            _textFormFields(
+                                valueKey: 'JobDescription',
+                                controller: _jobDescriptionContoller,
+                                enabled: true,
+                                fet: () {},
+                                maxLength: 100),
+                            _textTitle(label: 'Job Deadline Date:'),
+                            _textFormFields(
+                                valueKey: 'Deadline',
+                                controller: _deadlineDateContolle,
+                                enabled: true,
+                                fet: () {},
+                                maxLength: 100)
+                          ],
                         ),
                       ),
                     )
