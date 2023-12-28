@@ -46,7 +46,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
     try {
       await _auth.sendPasswordResetEmail(email: _forgetPassTextController.text);
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => Login()));
+          context, MaterialPageRoute(builder: (context) => Login()));
     } catch (e) {
       Fluttertoast.showToast(msg: e.toString());
     }
