@@ -12,9 +12,10 @@ class _UploadJobNowState extends State<UploadJobNow> {
       TextEditingController(text: 'Select Job Category');
   TextEditingController _jobTitleContoller = TextEditingController();
   TextEditingController _jobDescriptionContoller = TextEditingController();
-  TextEditingController _deadlineDateContolle = TextEditingController();
+  TextEditingController _deadlineDateContoller = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
   Widget _textTitle({required String label}) {
     return Padding(
       padding: EdgeInsets.all(5.0),
@@ -71,6 +72,22 @@ class _UploadJobNowState extends State<UploadJobNow> {
               )),
         ),
       ),
+    );
+  }
+
+  _showCategoriesDialog({required BuildContext context, required Size size}) {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          backgroundColor: Colors.black54,
+          title: Text(
+            'Job Category',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+        );
+      },
     );
   }
 
@@ -165,14 +182,52 @@ class _UploadJobNowState extends State<UploadJobNow> {
                             _textTitle(label: 'Job Deadline Date:'),
                             _textFormFields(
                                 valueKey: 'Deadline',
-                                controller: _deadlineDateContolle,
+                                controller: _deadlineDateContoller,
                                 enabled: true,
                                 fet: () {},
                                 maxLength: 100)
                           ],
                         ),
                       ),
-                    )
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 30),
+                        child: _isLoading
+                            ? CircularProgressIndicator()
+                            : MaterialButton(
+                                onPressed: () {},
+                                color: Colors.black,
+                                elevation: 8,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(13),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 14),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'Post Now',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 25,
+                                            fontFamily: 'Signatra'),
+                                      ),
+                                      SizedBox(
+                                        height: 9,
+                                      ),
+                                      Icon(
+                                        Icons.upload_file,
+                                        color: Colors.white,
+                                      )
+                                    ],
+                                  ),
+                                )),
+                      ),
+                    ),
                   ],
                 ),
               ),
