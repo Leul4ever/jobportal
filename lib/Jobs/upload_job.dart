@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../Persistent/persistent.dart';
 import '../widgets/bottom_nav_bar.dart';
 
 class UploadJobNow extends StatefulWidget {
@@ -75,16 +76,52 @@ class _UploadJobNowState extends State<UploadJobNow> {
     );
   }
 
-  _showCategoriesDialog({required BuildContext context, required Size size}) {
+  _showCategoriesDialog({required Size size}) {
     showDialog(
       context: context,
       builder: (ctx) {
         return AlertDialog(
           backgroundColor: Colors.black54,
-          title: Text(
+          title: const Text(
             'Job Category',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+          content: Container(
+            width: size.width * 0.9,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: Persistent.jobCategoryList.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    setState(() {
+                      _jobDescriptionContoller.text =
+                          Persistent.jobCategoryList[index];
+                    });
+                    Navigator.pop(context);
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.arrow_right_alt_outlined,
+                        color: Colors.grey,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          Persistent.jobCategoryList[index],
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 16,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         );
       },
@@ -93,6 +130,7 @@ class _UploadJobNowState extends State<UploadJobNow> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -163,7 +201,11 @@ class _UploadJobNowState extends State<UploadJobNow> {
                                 valueKey: 'JobCategory',
                                 controller: _jobCategoryContoller,
                                 enabled: false,
-                                fet: () {},
+                                fet: () {
+                                  _showCategoriesDialog(
+                                    size: size,
+                                  );
+                                },
                                 maxLength: 100),
                             _textTitle(label: 'Job Title:'),
                             _textFormFields(
