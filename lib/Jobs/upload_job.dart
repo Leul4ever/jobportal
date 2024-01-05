@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../Persistent/persistent.dart';
@@ -13,9 +14,12 @@ class _UploadJobNowState extends State<UploadJobNow> {
       TextEditingController(text: 'Select Job Category');
   TextEditingController _jobTitleContoller = TextEditingController();
   TextEditingController _jobDescriptionContoller = TextEditingController();
-  TextEditingController _deadlineDateContoller = TextEditingController();
+  TextEditingController _deadlineDateContoller =
+      TextEditingController(text: 'Job Deadline Date');
 
   final _formKey = GlobalKey<FormState>();
+  DateTime? picked;
+  Timestamp? deadLineDateTimeStamp;
   bool _isLoading = false;
   Widget _textTitle({required String label}) {
     return Padding(
@@ -141,6 +145,25 @@ class _UploadJobNowState extends State<UploadJobNow> {
     );
   }
 
+  void _pickDateDialog() async {
+    picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now().subtract(
+        const Duration(days: 0),
+      ),
+      lastDate: DateTime(2100),
+    );
+    if (picked != null) {
+      setState(() {
+        _deadlineDateContoller.text =
+            '${picked!.year}-${picked!.month}-${picked!.day}';
+        deadLineDateTimeStamp = Timestamp.fromMicrosecondsSinceEpoch(
+            picked!.microsecondsSinceEpoch);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -156,20 +179,6 @@ class _UploadJobNowState extends State<UploadJobNow> {
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBarForApp(indexNum: 2),
         backgroundColor: Colors.transparent,
-        // appBar: AppBar(
-        //   title: const Text('Upload Job Now'),
-        //   centerTitle: true,
-        //   flexibleSpace: Container(
-        //     decoration: BoxDecoration(
-        //       gradient: LinearGradient(
-        //         colors: [Colors.deepOrange.shade300, Colors.blueAccent],
-        //         begin: Alignment.centerLeft,
-        //         end: Alignment.centerRight,
-        //         stops: const [0.2, 0.9],
-        //       ),
-        //     ),
-        //   ),
-        // ),
         body: Center(
           child: Padding(
             padding: EdgeInsets.all(7.0),
@@ -238,8 +247,10 @@ class _UploadJobNowState extends State<UploadJobNow> {
                             _textFormFields(
                                 valueKey: 'Deadline',
                                 controller: _deadlineDateContoller,
-                                enabled: true,
-                                fet: () {},
+                                enabled: false,
+                                fet: () {
+                                  _pickDateDialog();
+                                },
                                 maxLength: 100)
                           ],
                         ),
