@@ -1,7 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:job_portal/Services/global_method.dart';
+import 'package:uuid/uuid.dart';
 
 import '../Persistent/persistent.dart';
+import '../Services/global_variables.dart';
 import '../widgets/bottom_nav_bar.dart';
 
 class UploadJobNow extends StatefulWidget {
@@ -164,6 +169,68 @@ class _UploadJobNowState extends State<UploadJobNow> {
     }
   }
 
+  void _uploadTask() async {
+    final jobId = const Uuid().v4();
+    User? user = FirebaseAuth.instance.currentUser;
+    final _uid = user!.uid;
+    final isValid = _formKey.currentState!.validate();
+
+    if (isValid) {
+      if (_deadlineDateContoller.text == 'choose job Deadline Date' ||
+          _jobCategoryContoller.text == 'choose Job Category') {
+        GlobalMethod.showErrorDialog(
+            error: 'Please pick every thing ', context: context);
+        return;
+      }
+      setState(() {
+        _isLoading = true;
+      });
+      try {
+        await FirebaseFirestore.instance.collection('jobs').doc(jobId).set({
+          'jobId': jobId,
+          'uploadedBy': _uid,
+          'email': user.email,
+          'jobTitle': _jobTitleContoller.text,
+          'jobDescription': _jobDescriptionContoller.text,
+          'deadlineDate': _deadlineDateContoller.text,
+          'deadlineDateTimeStamp': deadLineDateTimeStamp,
+          'jobCategory': _jobCategoryContoller.text,
+          'jobComment': [],
+          'recruitment': true,
+          'createdAt': Timestamp.now(),
+          'name': name,
+          'userImage': userImage,
+          'location': location,
+          'applicants': 0,
+        });
+        await Fluttertoast.showToast(
+          msg: 'The task has been uploaded',
+          toastLength: Toast.LENGTH_LONG,
+          backgroundColor: Colors.grey,
+          fontSize: 18.0,
+        );
+        _jobCategoryContoller.clear();
+        _jobDescriptionContoller.clear();
+        setState(() {
+          _jobCategoryContoller.text = 'Choose job category';
+          _deadlineDateContoller.text = 'Choose job Deadline date';
+        });
+      } catch (error) {
+        setState(() {
+          _isLoading = false;
+          GlobalMethod.showErrorDialog(
+              error: error.toString(), context: context);
+        });
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } else {
+      print('is not valid');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -262,7 +329,9 @@ class _UploadJobNowState extends State<UploadJobNow> {
                         child: _isLoading
                             ? CircularProgressIndicator()
                             : MaterialButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  _uploadTask();
+                                },
                                 color: Colors.black,
                                 elevation: 8,
                                 shape: RoundedRectangleBorder(
