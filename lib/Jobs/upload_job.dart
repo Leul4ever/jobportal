@@ -26,6 +26,16 @@ class _UploadJobNowState extends State<UploadJobNow> {
   DateTime? picked;
   Timestamp? deadLineDateTimeStamp;
   bool _isLoading = false;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _jobCategoryContoller.dispose();
+    _jobTitleContoller.dispose();
+    _jobDescriptionContoller.dispose();
+    _deadlineDateContoller.dispose();
+  }
+
   Widget _textTitle({required String label}) {
     return Padding(
       padding: EdgeInsets.all(5.0),
@@ -105,9 +115,10 @@ class _UploadJobNowState extends State<UploadJobNow> {
                 return InkWell(
                   onTap: () {
                     setState(() {
-                      _jobDescriptionContoller.text =
+                      _jobCategoryContoller.text =
                           Persistent.jobCategoryList[index];
                     });
+
                     Navigator.pop(context);
                   },
                   child: Row(
@@ -212,8 +223,8 @@ class _UploadJobNowState extends State<UploadJobNow> {
         _jobCategoryContoller.clear();
         _jobDescriptionContoller.clear();
         setState(() {
-          _jobCategoryContoller.text = 'Choose job category';
-          _deadlineDateContoller.text = 'Choose job Deadline date';
+          _jobCategoryContoller.text = 'Choose Job Category';
+          _deadlineDateContoller.text = 'Choose Job Deadline Date';
         });
       } catch (error) {
         setState(() {
