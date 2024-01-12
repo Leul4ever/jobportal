@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:job_portal/Jobs/search_job.dart';
 import 'package:job_portal/widgets/bottom_nav_bar.dart';
+
+import '../Persistent/persistent.dart';
 
 class JobScreen extends StatefulWidget {
   const JobScreen({super.key});
@@ -11,8 +14,91 @@ class JobScreen extends StatefulWidget {
 
 class _JobScreenState extends State<JobScreen> {
   FirebaseAuth _auth = FirebaseAuth.instance;
+  String? jobCategoryFilter;
+  _showCategoriesDialog({required Size size}) {
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          backgroundColor: Colors.black54,
+          title: const Text(
+            'Job Category',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+          content: Container(
+            width: size.width * 0.9,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: Persistent.jobCategoryList.length,
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    setState(() {
+                      jobCategoryFilter = Persistent.jobCategoryList[index];
+                    });
+
+                    Navigator.canPop(context) ? Navigator.pop(context) : null;
+                    print(
+                        'jobCategoryList[index],${Persistent.jobCategoryList[index]}');
+                  },
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.arrow_right_alt_outlined,
+                        color: Colors.grey,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          Persistent.jobCategoryList[index],
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 16,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  Navigator.canPop(context) ? Navigator.pop(context) : null;
+                },
+                child: Text(
+                  'Close',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                )),
+            TextButton(
+                onPressed: () {
+                  setState(() {
+                    jobCategoryFilter == null;
+                  });
+                  Navigator.canPop(context) ? Navigator.pop(context) : null;
+                },
+                child: Text(
+                  'Cancel Filter',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                  ),
+                )),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -26,8 +112,6 @@ class _JobScreenState extends State<JobScreen> {
         bottomNavigationBar: BottomNavigationBarForApp(indexNum: 0),
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: Text('Job screen'),
-          centerTitle: true,
           flexibleSpace: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -38,6 +122,27 @@ class _JobScreenState extends State<JobScreen> {
               ),
             ),
           ),
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: Icon(
+              Icons.filter_list_rounded,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              _showCategoriesDialog(size: size);
+            },
+          ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (c) => SearchScreen()));
+                },
+                icon: Icon(
+                  Icons.search_outlined,
+                  color: Colors.black,
+                ))
+          ],
         ),
       ),
     );
