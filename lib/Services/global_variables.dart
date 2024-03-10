@@ -6,6 +6,6 @@ String forgetUrlImage =
     'https://images.pexels.com/photos/4065624/pexels-photo-4065624.jpeg';
 String handshake =
     'https://www.pexels.com/photo/two-person-in-long-sleeved-shirt-shakehand-955395/';
-String? name;
+String? name = '';
 String? userImage = '';
 String? location = '';
