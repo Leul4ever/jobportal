@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:job_portal/Jobs/job_details.dart';
 import 'package:job_portal/Services/global_method.dart';
 
 class JobWidget extends StatefulWidget {
@@ -57,7 +58,7 @@ class _JobWidgetState extends State<JobWidget> {
                             : null;
                       } else {
                         GlobalMethod.showErrorDialog(
-                            error: 'you can not perofrm this action ',
+                            error: 'you can not perform  this action ',
                             context: context);
                       }
                     } catch (error) {
@@ -91,7 +92,15 @@ class _JobWidgetState extends State<JobWidget> {
       elevation: 8,
       margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
       child: ListTile(
-        onTap: () {},
+        onTap: () {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => JobDetailsScreen(
+                        uploadedBy: widget.uploadedBy,
+                        jobId: widget.jobId,
+                      )));
+        },
         onLongPress: () {
           _deleteDialog();
         },
