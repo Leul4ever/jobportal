@@ -312,6 +312,14 @@ class _JobScreenState extends State<JobScreen> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Persistent persistentObject = Persistent();
+    persistentObject.getMyData();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
@@ -395,9 +403,15 @@ class _JobScreenState extends State<JobScreen> {
               }
               // Return a default error message if none of the above conditions are met
               return Center(
-                child: Text(
-                  'No jobs found.',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                child: Container(
+                  margin: EdgeInsets.all(20), // Adjust the value as needed
+                  child: Text(
+                    'No openings in selected category. Please explore others. Thanks!.',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),
+                  ),
                 ),
               );
             } else {
