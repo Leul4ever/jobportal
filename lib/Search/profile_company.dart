@@ -1,33 +1,3 @@
-// import 'package:flutter/material.dart';
-//
-// import '../widgets/bottom_nav_bar.dart';
-//
-// class ProfileScreen extends StatefulWidget {
-//   const ProfileScreen({super.key});
-//
-//   @override
-//   State<ProfileScreen> createState() => _ProfileScreenState();
-// }
-//
-// class _ProfileScreenState extends State<ProfileScreen> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       decoration: BoxDecoration(
-//         gradient: LinearGradient(
-//           colors: [Colors.deepOrange.shade300, Colors.blueAccent],
-//           begin: Alignment.centerLeft,
-//           end: Alignment.centerRight,
-//           stops: const [0.2, 0.9],
-//         ),
-//       ),
-//       child: Scaffold(
-//         bottomNavigationBar: BottomNavigationBarForApp(indexNum: 3),
-//         backgroundColor: Colors.transparent,
-//       ),
-//     );
-//   }
-// }
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -160,12 +130,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.pinkAccent, Colors.redAccent],
+          colors: [Colors.deepOrange.shade300, Colors.blueAccent],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
-          stops: [0.2, 0.9],
+          stops: const [0.2, 0.9],
         ),
       ),
       child: Scaffold(
