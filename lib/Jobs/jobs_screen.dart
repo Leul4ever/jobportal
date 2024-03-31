@@ -331,6 +331,7 @@ class _JobScreenState extends State<JobScreen> {
           stops: const [0.2, 0.9],
         ),
       ),
+
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBarForApp(indexNum: 0),
         backgroundColor: Colors.transparent,
@@ -343,6 +344,7 @@ class _JobScreenState extends State<JobScreen> {
                 end: Alignment.centerRight,
                 stops: const [0.2, 0.9],
               ),
+
             ),
           ),
           automaticallyImplyLeading: false,
