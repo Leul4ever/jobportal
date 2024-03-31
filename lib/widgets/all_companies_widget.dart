@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../Search/profile_company.dart';
@@ -25,31 +24,31 @@ class AllWorkersWidget extends StatefulWidget {
 }
 
 class _AllWorkersWidgetState extends State<AllWorkersWidget> {
-  // void _mailTo() async {
-  //   var mailUrl = "mailto:${widget.userEmail}";
-  //   print('widget.userEmail ${widget.userEmail}');
-  //   if (await canLaunchUrlString(mailUrl)) {
-  //     await launchUrlString(mailUrl);
-  //   } else {
-  //     print(Error);
-  //     throw "Error occurred";
-  //   }
-  // }
   void _mailTo() async {
     var mailUrl = "mailto:${widget.userEmail}";
     print('widget.userEmail ${widget.userEmail}');
-    try {
-      if (await canLaunchUrlString(mailUrl)) {
-        await launchUrlString(mailUrl);
-      } else {
-        throw 'Could not launch $mailUrl';
-      }
-    } on PlatformException catch (e) {
-      print('Error launching URL: $e');
-    } catch (e) {
-      print('Error: $e');
+    if (await canLaunchUrlString(mailUrl)) {
+      await launchUrlString(mailUrl);
+    } else {
+      print(Error);
+      throw "Error occurred";
     }
   }
+  // void _mailTo() async {
+  //   var mailUrl = "mailto:${widget.userEmail}";
+  //   print('widget.userEmail ${widget.userEmail}');
+  //   try {
+  //     if (await canLaunchUrlString(mailUrl)) {
+  //       await launchUrlString(mailUrl);
+  //     } else {
+  //       throw 'Could not launch $mailUrl';
+  //     }
+  //   } on PlatformException catch (e) {
+  //     print('Error launching URL: $e');
+  //   } catch (e) {
+  //     print('Error: $e');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -107,16 +106,16 @@ class _AllWorkersWidgetState extends State<AllWorkersWidget> {
             ),
           ],
         ),
-        trailing: IconButton(
-          icon: const Icon(
-            Icons.mail,
-            size: 30,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            _mailTo();
-          },
-        ),
+        // trailing: IconButton(
+        //   icon: const Icon(
+        //     Icons.mail,
+        //     size: 30,
+        //     color: Colors.white,
+        //   ),
+        //   onPressed: () {
+        //     _mailTo();
+        //   },
+        // ),
       ),
     );
   }
