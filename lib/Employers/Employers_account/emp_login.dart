@@ -1,23 +1,18 @@
 //import 'dart:html';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 //import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-
-import 'package:firebase_core/firebase_core.dart';
-import 'package:project1/Employers/Employers_account/emp_verify.dart';
-import 'package:project1/Employers/bridgeTOemp_home_page.dart';
-import 'package:project1/Employers/home_page/emp_home_page.dart';
-import '../../firebase_options.dart';
 import 'package:email_validator/email_validator.dart';
-import 'emp_forgote_account.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:project1/Employers/Employers_account/emp_verify.dart';
+import 'package:project1/Employers/home_page/emp_home_page.dart';
+
 import 'empUtils.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
+import 'emp_forgote_account.dart';
 
 class EmpLoginWidget extends StatefulWidget {
   final VoidCallback onclickedSignIn;
@@ -101,17 +96,6 @@ class _EmpLoginWidgetState extends State<EmpLoginWidget> {
           email: emailController.text.trim(),
           password: passwordController.text.trim());
       Navigator.pushNamed(context, VerifyEmpEmail.routeName);
-      // await checkUserRole();
-      // if (isJobSeeker) {
-      //   Navigator.pushNamed(context, home.routeName);
-      //   //  Navigator.of(context).pop();
-      //   // Utils.showSnackBar('Job seeker not found', Colors.red);
-      //   // FirebaseAuth.instance.signOut();
-      // } else {
-      //   Utils.showSnackBar('Job seeker not found', Colors.red);
-      //   FirebaseAuth.instance.signOut();
-      //   //  Navigator.of(context).pop();
-      // }
     } on FirebaseAuthException catch (e) {
       EmpUtils.showSnackBar(e.message, Colors.red);
       print(e.message);
@@ -119,9 +103,6 @@ class _EmpLoginWidgetState extends State<EmpLoginWidget> {
     setState(() {
       _showProgressIndicator = false;
     });
-    // if (mounted) {
-    //   Navigator.of(context).pop();
-    // }
   }
 
   @override
@@ -138,18 +119,6 @@ class _EmpLoginWidgetState extends State<EmpLoginWidget> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  // TextFormField(
-                  //   controller: companyNameController,
-                  //   keyboardType: TextInputType.visiblePassword,
-                  //   decoration: InputDecoration(label: Text('company name')),
-                  //   // autovalidateMode: AutovalidateMode.onUserInteraction,
-                  // ),
-                  // TextFormField(
-                  //   controller: taxIdController,
-                  //   keyboardType: TextInputType.visiblePassword,
-                  //   decoration: InputDecoration(label: Text('Tax ID')),
-                  //   //autovalidateMode: AutovalidateMode.onUserInteraction,
-                  // ),
                   AnimatedTextKit(
                     animatedTexts: [
                       TypewriterAnimatedText('Welcome back!',
@@ -164,9 +133,6 @@ class _EmpLoginWidgetState extends State<EmpLoginWidget> {
                             milliseconds: 450,
                           )),
                     ],
-                    // onTap: () {
-                    //   debugPrint("Welcome back!");
-                    // },
                     isRepeatingAnimation: true,
                     totalRepeatCount: 4,
                   ),
@@ -223,6 +189,8 @@ class _EmpLoginWidgetState extends State<EmpLoginWidget> {
                   SizedBox(
                     height: 10,
                   ),
+
+                  // command design pattern
                   ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
                           minimumSize: Size.fromHeight(50)),

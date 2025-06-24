@@ -699,7 +699,7 @@ class _EditJobPostingFormState extends State<EditJobPostingForm> {
                       },
                       child: Text('Update Post'),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
+                        backgroundColor: Colors.blue,
                         padding:
                             EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                         textStyle: TextStyle(

@@ -176,7 +176,7 @@ class _SendEmailScreenState extends State<SendEmailScreen> {
                 onPressed: _sendEmail,
                 child: Text('Send Email'),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blueAccent,
+                  backgroundColor: Colors.blueAccent,
                   padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                   textStyle: TextStyle(fontSize: 18),
                 ),

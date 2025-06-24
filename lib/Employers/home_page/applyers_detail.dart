@@ -209,7 +209,7 @@ class ApplicantPage extends StatelessWidget {
                                 //   ChooseCandidate(jobId, applicant_id);
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.green,
+                                backgroundColor: Colors.green,
                               ),
                               child: Text('Shortlist'),
                             ),

@@ -1,17 +1,15 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:project1/Employers/models/jobs_model.dart';
-import 'package:project1/job_seeker_home_page/favorites.dart';
 import 'package:project1/job_seeker_home_page/filter.dart';
 import 'package:project1/job_seeker_home_page/image_card.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../Employers/home_page/detail_page.dart';
-import 'package:rxdart/rxdart.dart';
-import 'dart:math';
 
 class JobsList extends StatefulWidget {
   @override
@@ -195,18 +193,19 @@ class _JobsListState extends State<JobsList> {
     );
   }
 
-  DateTime parseDate(String date) {
-    final DateFormat formatter = DateFormat('yyyy-MM-dd');
-    return formatter.parse(date);
+  String formatTimestamp(Timestamp timestamp) {
+    DateTime dateTime = timestamp.toDate();
+    return DateFormat('MMM d, yyyy at h:mm a').format(dateTime);
   }
 
-//12 Jun 2023
+  DateTime parseFormattedDate(String formattedDate) {
+    return DateFormat('MMM d, yyyy at h:mm a').parse(formattedDate);
+  }
+
   String getPostedTime(String postedDate) {
     final now = DateTime.now();
-
-    DateTime parsedDate = parseDate(postedDate);
+    DateTime parsedDate = parseFormattedDate(postedDate);
     final difference = now.difference(parsedDate);
-    print(parsedDate);
     if (difference.inDays > 0) {
       return '${difference.inDays} days ago';
     } else if (difference.inHours > 0) {
@@ -836,27 +835,26 @@ class _JobsListState extends State<JobsList> {
                                           ],
                                         ),
                                         trailing: Container(
-                                          width: 80,
-                                          height: 40,
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 5.0, horizontal: 5.0),
-                                          decoration: BoxDecoration(
-                                            color: Colors.blue,
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            getPostedTime(
-                                                document['posted time']),
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12.0,
-                                              fontWeight: FontWeight.bold,
+                                            width: 80,
+                                            height: 40,
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 5.0, horizontal: 5.0),
+                                            decoration: BoxDecoration(
+                                              color: Colors.blue,
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
                                             ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              getPostedTime(formatTimestamp(
+                                                  document['posted time'])),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12.0,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            )),
                                         tileColor: Colors.grey.shade100,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:

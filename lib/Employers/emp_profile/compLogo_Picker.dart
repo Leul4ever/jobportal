@@ -1,12 +1,12 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-//import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CompanyLogoPicker extends StatefulWidget {
-  final void Function(File) onImageSelected;
+  final void Function(File)
+      onImageSelected; // Observer pattern: Callback function
 
   CompanyLogoPicker({required this.onImageSelected});
 
@@ -16,33 +16,34 @@ class CompanyLogoPicker extends StatefulWidget {
 
 class _CompanyLogoPickerState extends State<CompanyLogoPicker> {
   File? _image;
-  String? imageUrl;
-  final ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker(); // Factory Method pattern
 
+  // Strategy pattern: Two different strategies for selecting an image
   Future getImageFromCamera() async {
-    final XFile? pickedFile =
-        await _picker.pickImage(source: ImageSource.camera);
+    final XFile? pickedFile = await _picker.pickImage(
+        source: ImageSource.camera); // Factory Method pattern
 
     if (pickedFile != null) {
       setState(() {
-        _image = File(pickedFile.path);
+        _image = File(pickedFile.path); // Update the state
       });
-      widget.onImageSelected(_image!);
+      widget
+          .onImageSelected(_image!); // Observer pattern: Notifying the observer
       print(_image);
     }
   }
 
   Future getImageFromGallery() async {
-    final XFile? pickedFile =
-        await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile = await _picker.pickImage(
+        source: ImageSource.gallery); // Factory design  pattern
 
     if (pickedFile != null) {
       setState(() {
-        _image = File(pickedFile.path);
+        _image = File(pickedFile.path); // Update the state
       });
-      widget.onImageSelected(_image!);
+      widget
+          .onImageSelected(_image!); // Observer pattern: Notifying the observer
       print('your image path is :${_image}');
-      // widget.onImageSelected(_image);
     }
   }
 
@@ -52,27 +53,11 @@ class _CompanyLogoPickerState extends State<CompanyLogoPicker> {
     if (_image != null) storage.putFile(_image!);
   }
 
-  // String? _uploadedFileURL;
-
-  // Future<void> _uploadFile() async {
-  //   final FirebaseStorage storage = FirebaseStorage.instance;
-  //   final String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-  //   final Reference reference = storage.ref().child('images/$fileName');
-  //   final UploadTask uploadTask = reference.putFile(_image!);
-  //   final TaskSnapshot downloadUrl = (await uploadTask);
-  //   final String url = (await uploadTask.snapshot.ref.getDownloadURL());
-  //   setState(() {
-  //     _uploadedFileURL = url;
-  //   });
-  //   widget.onImageSelected(_image!, _uploadedFileURL);
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Text('Company Logo'),
         SizedBox(height: 10),
         GestureDetector(
           onTap: () {
@@ -87,7 +72,7 @@ class _CompanyLogoPickerState extends State<CompanyLogoPicker> {
                           leading: Icon(Icons.camera_alt),
                           title: Text('Take a photo'),
                           onTap: () {
-                            getImageFromCamera();
+                            getImageFromCamera(); // Strategy pattern
                             Navigator.pop(context);
                           },
                         ),
@@ -95,9 +80,7 @@ class _CompanyLogoPickerState extends State<CompanyLogoPicker> {
                           leading: Icon(Icons.photo_library),
                           title: Text('Choose from gallery'),
                           onTap: () {
-                            getImageFromGallery();
-                            //_upload();
-                            // _uploadFile();
+                            getImageFromGallery(); // Strategy pattern
                             Navigator.pop(context);
                           },
                         ),

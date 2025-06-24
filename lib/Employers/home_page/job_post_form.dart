@@ -665,7 +665,7 @@ class _JobPostingFormState extends State<JobPostingForm> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.blue,
+                          backgroundColor: Colors.blue,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 50, vertical: 20),
                           textStyle: const TextStyle(

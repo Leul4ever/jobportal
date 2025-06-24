@@ -79,7 +79,7 @@ class _EmpHomePageState extends State<EmpHomePage> {
               },
               child: Text('Post a new Job'),
               style: ElevatedButton.styleFrom(
-                primary: Colors.blue,
+                backgroundColor: Colors.blue,
                 padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                 textStyle: TextStyle(
                   fontSize: 20,
@@ -96,7 +96,7 @@ class _EmpHomePageState extends State<EmpHomePage> {
               },
               child: Text('Manage Job'),
               style: ElevatedButton.styleFrom(
-                primary: Colors.blue,
+                backgroundColor: Colors.blue,
                 padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                 textStyle: TextStyle(
                   fontSize: 20,

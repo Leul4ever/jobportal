@@ -78,7 +78,7 @@ class _DateFormFieldState extends State<DateFormField> {
                 ? ''
                 : 'Please select a date',
             style: TextStyle(
-              color: Theme.of(context).errorColor,
+              color: Theme.of(context).colorScheme.error,
               fontSize: 12,
             ),
           ),

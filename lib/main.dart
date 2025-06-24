@@ -165,8 +165,6 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primaryColor: Colors.indigo,
         primarySwatch: Colors.blue,
-        backgroundColor: Colors.blue,
-        errorColor: Colors.red,
       ),
       home: Splash1(),
       // StreamBuilder<User?>(

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:project1/Employers/Employers_account/empUtils.dart';
 import 'package:project1/Employers/home_page/messages.dart';
 import 'package:project1/Employers/home_page/send_email_screen.dart';
 import 'package:project1/profile/job_seeker_view_profile.dart';
@@ -8,9 +7,6 @@ import 'package:project1/profile/job_seeker_view_profile.dart';
 enum SortBy { Relevance, Experience, ApplicationDate }
 
 enum ViewMode { Grid, List }
-
-// class candidateProfile extends StatefulWidget {
-//   static const routeName = '/candidateProfile';
 
 class candidateProfile extends StatelessWidget {
   static const routeName = '/candidateProfile';
@@ -156,21 +152,12 @@ class candidateProfile extends StatelessWidget {
                             ));
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.red,
+                            backgroundColor: Colors.red,
                           ),
                           child: const Text('Reject'),
                         ),
                       ),
                       const SizedBox(width: 16),
-                      // Expanded(
-                      //   child: ElevatedButton(
-                      //     onPressed: () {},
-                      //     style: ElevatedButton.styleFrom(
-                      //       primary: Colors.blue,
-                      //     ),
-                      //     child: const Text('Schedule Interview'),
-                      //   ),
-                      // ),
                     ],
                   ),
                 ),

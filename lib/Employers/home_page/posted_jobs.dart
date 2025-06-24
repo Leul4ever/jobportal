@@ -1,6 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project1/Employers/home_page/appliers.dart';
 
 class Posted_jobs extends StatefulWidget {
@@ -19,6 +19,7 @@ class _Posted_jobsState extends State<Posted_jobs> {
       if (user != null) {
         setState(() {
           currentUser = user.uid;
+          // Singlton Design pattern
           jobPostingsStream = FirebaseFirestore.instance
               .collection('employer')
               .doc(currentUser)
@@ -42,6 +43,9 @@ class _Posted_jobsState extends State<Posted_jobs> {
     print('the document path is ${currentUser}');
     return Scaffold(
       backgroundColor: Colors.white,
+
+      // Observer Design pattern
+
       body: StreamBuilder<QuerySnapshot>(
         stream: jobPostingsStream,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -54,7 +58,6 @@ class _Posted_jobsState extends State<Posted_jobs> {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
               return const Center(child: CircularProgressIndicator());
-
             default:
               return SafeArea(
                 child: Padding(
